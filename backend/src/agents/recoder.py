@@ -1,4 +1,5 @@
 """Wrapper around HelloAgents SimpleAgent that records tool calls."""
+# ✅️
 
 from __future__ import annotations
 
