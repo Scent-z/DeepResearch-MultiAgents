@@ -28,7 +28,7 @@ class TodoItem:
 class SummaryState:
     research_topic: str = field(default=None)  # Report topic
     search_query: str = field(default=None)  # Deprecated placeholder
-    web_research_results: Annotated[list, operator.add] = field(default_factory=list)
+    web_research_results: Annotated[list, operator.add] = field(default_factory=list)  # 大概率是Langgraph写法, 但是实际没有使用Langgraph
     sources_gathered: Annotated[list, operator.add] = field(default_factory=list)
     research_loop_count: int = field(default=0)  # Research loop count
     running_summary: str = field(default=None)  # Legacy summary field
@@ -48,4 +48,3 @@ class SummaryStateOutput:
     running_summary: str = field(default=None)  # Backward-compatible文本
     report_markdown: Optional[str] = field(default=None)
     todo_items: List[TodoItem] = field(default_factory=list)
-
