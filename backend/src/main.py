@@ -133,7 +133,7 @@ def create_app() -> FastAPI:
         except ValueError as exc:  # Likely due to unsupported configuration
             raise HTTPException(status_code=400, detail=str(exc)) from exc
         except Exception as exc:  # pragma: no cover - defensive guardrail
-            raise HTTPException(status_code=500, detail="Research failed") from exc
+            raise HTTPException(status_code=500, detail="服务器内部出错, 研究失败") from exc
 
         todo_payload = [
             {
@@ -168,7 +168,7 @@ def create_app() -> FastAPI:
                 for event in agent.run_stream(payload.topic):
                     yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
             except Exception as exc:  # pragma: no cover - defensive guardrail
-                logger.exception("Streaming research failed")
+                logger.exception("流式输出失败")
                 error_payload = {"type": "error", "detail": str(exc)}
                 yield f"data: {json.dumps(error_payload, ensure_ascii=False)}\n\n"
 
@@ -193,6 +193,6 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         port=8000,
-        reload=True,
+        reload=True,  # 启用热重载功能，开发时修改代码后 uvicorn 自动重启应用，无需手动停止和重新运行，提高开发效率
         log_level="info"
     )
