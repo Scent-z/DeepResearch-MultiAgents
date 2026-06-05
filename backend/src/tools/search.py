@@ -20,14 +20,13 @@ logger = logging.getLogger(__name__)
 MAX_TOKENS_PER_SOURCE = 2000
 _GLOBAL_SEARCH_TOOL = SearchTool(backend="hybrid")
 
-
 # ✅️
 def dispatch_search(
     query: str,
     config: Configuration,
     loop_count: int,
 ) -> Tuple[dict[str, Any] | None, list[str], Optional[str], str]:
-    """Execute configured search backend and normalise response payload."""
+    """执行已配置的搜索后端，并对返回结果进行统一格式化处理"""
 
     search_api = get_config_value(config.search_api)
 
@@ -46,7 +45,8 @@ def dispatch_search(
     except Exception as exc:  # pragma: no cover - defensive logging
         logger.exception("Search backend %s failed: %s", search_api, exc)
         raise
-
+    
+    # 情况1：SearchTool 返回了字符串（异常情况）
     if isinstance(raw_response, str):
         notices = [raw_response]
         logger.warning("Search backend %s returned text notice: %s", search_api, raw_response)
@@ -56,13 +56,14 @@ def dispatch_search(
             "answer": None,
             "notices": notices,
         }
+    # 情况2：SearchTool 返回了正常的字典
     else:
         payload = raw_response
         notices = list(payload.get("notices") or [])
 
     backend_label = str(payload.get("backend") or search_api)
-    answer_text = payload.get("answer")
-    results = payload.get("results", [])
+    answer_text = payload.get("answer")  # AI 直接生成的答案, 一段完整的回答文本
+    results = payload.get("results", [])  # 搜索结果列表（标题、URL、摘要）, 多条网页链接和摘要
 
     if notices:
         for notice in notices:
@@ -84,7 +85,7 @@ def prepare_research_context(
     answer_text: Optional[str],
     config: Configuration,
 ) -> tuple[str, str]:
-    """Build structured context and source summary for downstream agents."""
+    """构建结构化上下文和来源摘要"""
 
     sources_summary = format_sources(search_result)
     context = deduplicate_and_format_sources(

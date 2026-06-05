@@ -30,7 +30,7 @@ from agents import Summarizer
 # from services.summarizer import SummarizationService
 # from services.search import dispatch_search, prepare_research_context
 from tools.search import dispatch_search, prepare_research_context
-from services.tool_events import ToolCallTracker
+from tools.tool_events import ToolCallTracker
 
 logger = logging.getLogger(__name__)
 

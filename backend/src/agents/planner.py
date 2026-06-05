@@ -1,4 +1,4 @@
-"""Service responsible for converting the research topic into actionable tasks."""
+"""负责将研究主题转换为可执行任务"""
 
 # ✅️
 from __future__ import annotations
@@ -23,7 +23,7 @@ TOOL_CALL_PATTERN = re.compile(
 )
 
 class Planner:
-    """Wraps the planner agent to produce structured TODO items."""
+    """Planner智能体, 生成结构化的待办事项"""
 
     def __init__(self, planner_agent: ToolAwareSimpleAgent, config: Configuration) -> None:
         self._agent = planner_agent
@@ -31,7 +31,7 @@ class Planner:
 
     # ✅️
     def plan_todo_list(self, state: SummaryState) -> List[TodoItem]:
-        """Ask the planner agent to break the topic into actionable tasks."""
+        """将主题拆解为可执行任务"""
 
         prompt = todo_planner_instructions.format(
             current_date=get_current_date(),
@@ -70,7 +70,7 @@ class Planner:
 
     @staticmethod
     def create_fallback_task(state: SummaryState) -> TodoItem:
-        """Create a minimal fallback task when planning failed."""
+        """当规划失败时，创建一个兜底任务作为回退方案"""
 
         return TodoItem(
             id=1,
@@ -81,7 +81,7 @@ class Planner:
 
     # ✅️
     def _extract_tasks(self, raw_response: str) -> List[dict[str, Any]]:
-        """Parse planner output into a list of task dictionaries."""
+        """将规划器的输出解析为任务字典列表"""
 
         text = raw_response.strip()
         if self._config.strip_thinking_tokens:
@@ -113,7 +113,7 @@ class Planner:
 
     # ✅️
     def _extract_json_payload(self, text: str) -> Optional[dict[str, Any] | list]:
-        """Try to locate and parse a JSON object or array from the text."""
+        """尝试从文本中定位并解析 JSON 对象或 JSON 数组"""
 
         start = text.find("{")
         end = text.rfind("}")
@@ -136,7 +136,7 @@ class Planner:
         return None
 
     def _extract_tool_payload(self, text: str) -> Optional[dict[str, Any]]:
-        """Parse the first TOOL_CALL expression in the output."""
+        """解析输出中的第一个 TOOL_CALL 表达式"""
 
         match = TOOL_CALL_PATTERN.search(text)
         if not match:
