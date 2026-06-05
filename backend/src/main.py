@@ -74,7 +74,6 @@ def _build_config(payload: ResearchRequest) -> Configuration:
 
     return Configuration.from_env(overrides=overrides)
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """应用生命周期事件处理器，替代已弃用的 on_event"""
@@ -106,7 +105,6 @@ async def lifespan(app: FastAPI):
 
     # Shutdown: 应用关闭时执行（如有需要可添加清理逻辑）
     logger.info("深度研究多智能体应用关闭")
-
 
 def create_app() -> FastAPI:
     app = FastAPI(title="深度研究多智能体", lifespan=lifespan)
@@ -172,6 +170,7 @@ def create_app() -> FastAPI:
                 error_payload = {"type": "error", "detail": str(exc)}
                 yield f"data: {json.dumps(error_payload, ensure_ascii=False)}\n\n"
 
+        # StreamingResponse 不是返回一个对象给客户端，而是建立HTTP长连接，持续写入数据
         return StreamingResponse(
             event_iterator(),
             media_type="text/event-stream",  # 设置 HTTP 响应的 Content-Type 头 ，告诉客户端返回的是什么类型的数据，此时为SSE 流式事件

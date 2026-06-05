@@ -167,6 +167,7 @@ class DeepResearchAgent:
         yield {"type": "status", "message": "初始化研究流程"}
 
         state.todo_items = self.planner.plan_todo_list(state)
+        # 展示有哪些工具要调用
         for event in self._drain_tool_events(state, step=0):
             yield event
         if not state.todo_items:
@@ -304,6 +305,7 @@ class DeepResearchAgent:
         # 启动多线程
         for task in state.todo_items:
             step = channel_map.get(task.id, {}).get("step", 0)
+            # worker是线程要执行的函数; args是传递给函数的参数元组
             thread = Thread(target=worker, args=(task, step), daemon=True)  # 守护线程，主线程结束时自动结束
             threads.append(thread)
             thread.start()
