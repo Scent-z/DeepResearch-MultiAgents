@@ -6,13 +6,13 @@ from __future__ import annotations
 from collections.abc import Callable, Iterator
 from typing import Tuple
 
-from hello_agents import ToolAwareSimpleAgent
+from agent_structure.agents import ToolAwareSimpleAgent
 
 from models import SummaryState, TodoItem
 from config import Configuration
 from utils import strip_thinking_tokens
-from services.notes import build_note_guidance
-from services.text_processing import strip_tool_calls
+from tools import build_note_guidance
+from tools import strip_tool_calls
 
 
 class Summarizer:

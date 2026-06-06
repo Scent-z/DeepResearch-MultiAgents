@@ -9,9 +9,10 @@ from queue import Empty, Queue
 from threading import Lock, Thread
 from typing import Any, Callable, Iterator
 
-from hello_agents import HelloAgentsLLM, ToolAwareSimpleAgent
-from hello_agents.tools import ToolRegistry
-from hello_agents.tools.builtin.note_tool import NoteTool
+from agent_structure.core import LLM
+from agent_structure.agents import ToolAwareSimpleAgent
+from agent_structure.tools import ToolRegistry
+from agent_structure.tools.tools import NoteTool
 
 from config import Configuration
 from prompts import (
@@ -85,8 +86,8 @@ class DeepResearchAgent:
         self._last_search_notices: list[str] = []
 
     # ✅️
-    def _init_llm(self) -> HelloAgentsLLM:
-        """Instantiate HelloAgentsLLM following configuration preferences."""
+    def _init_llm(self) -> LLM:
+        """Instantiate LLM following configuration preferences."""
         llm_kwargs: dict[str, Any] = {"temperature": 0.0}
 
         model_id = self.config.llm_model_id or self.config.local_llm
@@ -113,7 +114,7 @@ class DeepResearchAgent:
             if self.config.llm_api_key:
                 llm_kwargs["api_key"] = self.config.llm_api_key
 
-        return HelloAgentsLLM(**llm_kwargs)
+        return LLM(**llm_kwargs)
 
     # ✅️
     def _create_tool_aware_agent(self, *, name: str, system_prompt: str) -> ToolAwareSimpleAgent:

@@ -5,12 +5,12 @@ from __future__ import annotations
 
 import json
 
-from hello_agents import ToolAwareSimpleAgent
+from agent_structure.agents import ToolAwareSimpleAgent
 
 from models import SummaryState
 from config import Configuration
 from utils import strip_thinking_tokens
-from services.text_processing import strip_tool_calls
+from tools import strip_tool_calls
 
 
 class Reporter:

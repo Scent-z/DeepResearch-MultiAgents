@@ -6,7 +6,7 @@ from __future__ import annotations
 import logging
 from typing import Any, Optional, Tuple
 
-from hello_agents.tools import SearchTool
+from agent_structure.tools.tools import SearchTool
 
 from config import Configuration
 from utils import (

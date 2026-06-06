@@ -8,7 +8,7 @@ import logging
 import re
 from typing import Any, List, Optional
 
-from hello_agents import ToolAwareSimpleAgent
+from agent_structure.agents import ToolAwareSimpleAgent
 
 from models import SummaryState, TodoItem
 from config import Configuration
