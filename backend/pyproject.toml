@@ -1,9 +1,9 @@
 [project]
-name = "helloagents-deep-researcher"
+name = "DeepResearch-MultiAgents"
 version = "0.0.1"
-description = "Fully local web research and summarization assistant powered by HelloAgents."
+description = "Fully local web research and summarization assistant."
 authors = [
-    { name = "Lance Martin" }
+    { name = "Scent" }
 ]
 readme = "README.md"
 license = { text = "MIT" }
