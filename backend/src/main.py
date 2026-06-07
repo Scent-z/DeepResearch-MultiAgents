@@ -8,11 +8,14 @@ import sys
 from contextlib import asynccontextmanager
 from typing import Any, Dict, Iterator, Optional
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from loguru import logger
 from pydantic import BaseModel, Field
+
+load_dotenv()
 
 from config import Configuration, SearchAPI
 from deepresearch_agent import DeepResearchAgent
